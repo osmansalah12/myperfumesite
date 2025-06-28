@@ -13,7 +13,8 @@ import {
   Bell,
   Menu,
   X,
-  Sparkles
+  Sparkles,
+  Bot
 } from 'lucide-react';
 import {
   NavigationMenu,
@@ -61,6 +62,17 @@ export default function Header() {
                         <div className="text-sm font-medium leading-none">Search Perfumes</div>
                         <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                           Find perfumes by notes, brand, or mood
+                        </p>
+                      </Link>
+                    </NavigationMenuLink>
+                    <NavigationMenuLink asChild>
+                      <Link href="/ai-chat" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                        <div className="text-sm font-medium leading-none flex items-center gap-2">
+                          <Bot className="h-4 w-4" />
+                          AI Assistant
+                        </div>
+                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                          Get personalized recommendations with AI
                         </p>
                       </Link>
                     </NavigationMenuLink>
@@ -159,15 +171,30 @@ export default function Header() {
 
           {/* User Actions */}
           <div className="flex items-center space-x-2">
-            <Button variant="ghost" size="icon" className="hidden md:flex">
-              <Heart className="h-5 w-5" />
-            </Button>
-            <Button variant="ghost" size="icon" className="hidden md:flex">
-              <Bell className="h-5 w-5" />
-            </Button>
-            <Button variant="ghost" size="icon" className="hidden md:flex">
-              <ShoppingBag className="h-5 w-5" />
-            </Button>
+            <Link href="/wishlist">
+              <Button variant="ghost" size="icon" className="hidden md:flex relative">
+                <Heart className="h-5 w-5" />
+                <Badge className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 text-xs">
+                  3
+                </Badge>
+              </Button>
+            </Link>
+            <Link href="/notifications">
+              <Button variant="ghost" size="icon" className="hidden md:flex relative">
+                <Bell className="h-5 w-5" />
+                <Badge className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 text-xs bg-red-500">
+                  2
+                </Badge>
+              </Button>
+            </Link>
+            <Link href="/cart">
+              <Button variant="ghost" size="icon" className="relative">
+                <ShoppingBag className="h-5 w-5" />
+                <Badge className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 text-xs">
+                  2
+                </Badge>
+              </Button>
+            </Link>
             <Button variant="ghost" size="icon">
               <User className="h-5 w-5" />
             </Button>
@@ -205,6 +232,12 @@ export default function Header() {
                 <Link href="/search" className="block px-3 py-2 text-sm font-medium hover:bg-accent rounded-md">
                   Search Perfumes
                 </Link>
+                <Link href="/ai-chat" className="block px-3 py-2 text-sm font-medium hover:bg-accent rounded-md">
+                  <span className="flex items-center gap-2">
+                    <Bot className="h-4 w-4" />
+                    AI Assistant
+                  </span>
+                </Link>
                 <Link href="/scent-builder" className="block px-3 py-2 text-sm font-medium hover:bg-accent rounded-md">
                   <span className="flex items-center gap-2">
                     Scent Builder 
@@ -231,6 +264,12 @@ export default function Header() {
                 </Link>
                 <Link href="/layering-guide" className="block px-3 py-2 text-sm font-medium hover:bg-accent rounded-md">
                   Layering Guide
+                </Link>
+                <Link href="/wishlist" className="block px-3 py-2 text-sm font-medium hover:bg-accent rounded-md">
+                  Wishlist
+                </Link>
+                <Link href="/notifications" className="block px-3 py-2 text-sm font-medium hover:bg-accent rounded-md">
+                  Notifications
                 </Link>
               </div>
             </div>
