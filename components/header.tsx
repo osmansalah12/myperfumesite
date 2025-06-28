@@ -172,27 +172,18 @@ export default function Header() {
           {/* User Actions */}
           <div className="flex items-center space-x-2">
             <Link href="/wishlist">
-              <Button variant="ghost" size="icon" className="hidden md:flex relative">
+              <Button variant="ghost" size="icon" className="hidden md:flex">
                 <Heart className="h-5 w-5" />
-                <Badge className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 text-xs">
-                  3
-                </Badge>
               </Button>
             </Link>
             <Link href="/notifications">
-              <Button variant="ghost" size="icon" className="hidden md:flex relative">
+              <Button variant="ghost" size="icon" className="hidden md:flex">
                 <Bell className="h-5 w-5" />
-                <Badge className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 text-xs bg-red-500">
-                  2
-                </Badge>
               </Button>
             </Link>
             <Link href="/cart">
-              <Button variant="ghost" size="icon" className="relative">
+              <Button variant="ghost" size="icon">
                 <ShoppingBag className="h-5 w-5" />
-                <Badge className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 text-xs">
-                  2
-                </Badge>
               </Button>
             </Link>
             <Button variant="ghost" size="icon">

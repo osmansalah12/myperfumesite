@@ -27,6 +27,13 @@ interface NoteIntensity {
   intensity: number;
 }
 
+interface PerfumeMatch {
+  perfume: Perfume;
+  similarity: number;
+  matchingNotes: string[];
+  reason: string;
+}
+
 export default function ScentBuilderPage() {
   const [selectedProfile, setSelectedProfile] = useState<'fresh' | 'warm' | 'floral' | 'spicy' | 'custom'>('custom');
   const [topNotes, setTopNotes] = useState<NoteIntensity[]>([]);
@@ -34,7 +41,7 @@ export default function ScentBuilderPage() {
   const [baseNotes, setBaseNotes] = useState<NoteIntensity[]>([]);
   const [selectedMoods, setSelectedMoods] = useState<string[]>([]);
   const [selectedOccasions, setSelectedOccasions] = useState<string[]>([]);
-  const [matches, setMatches] = useState<{ perfume: Perfume; similarity: number }[]>([]);
+  const [matches, setMatches] = useState<PerfumeMatch[]>([]);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   const presetProfiles = {
@@ -118,36 +125,109 @@ export default function ScentBuilderPage() {
     }
   };
 
+  const calculateSimilarity = (perfume: Perfume, userNotes: string[], userIntensities: { [key: string]: number }) => {
+    const perfumeNotes = [
+      ...perfume.notes.top,
+      ...perfume.notes.middle,
+      ...perfume.notes.base
+    ];
+
+    // Find matching notes
+    const matchingNotes = userNotes.filter(userNote => 
+      perfumeNotes.some(perfumeNote => 
+        perfumeNote.toLowerCase().includes(userNote.toLowerCase()) ||
+        userNote.toLowerCase().includes(perfumeNote.toLowerCase())
+      )
+    );
+
+    // Calculate base similarity
+    let similarity = 0;
+    if (userNotes.length > 0) {
+      similarity = (matchingNotes.length / userNotes.length) * 100;
+    }
+
+    // Bonus points for exact matches
+    const exactMatches = userNotes.filter(userNote => 
+      perfumeNotes.some(perfumeNote => 
+        perfumeNote.toLowerCase() === userNote.toLowerCase()
+      )
+    );
+    similarity += exactMatches.length * 10;
+
+    // Bonus for high-intensity matching notes
+    matchingNotes.forEach(note => {
+      const intensity = userIntensities[note] || 5;
+      if (intensity >= 7) {
+        similarity += 5;
+      }
+    });
+
+    // Cap at 99%
+    return Math.min(99, Math.round(similarity));
+  };
+
+  const generateMatchReason = (perfume: Perfume, matchingNotes: string[], similarity: number) => {
+    if (similarity >= 80) {
+      return `Excellent match! Shares ${matchingNotes.length} key notes including ${matchingNotes.slice(0, 2).join(' and ')}.`;
+    } else if (similarity >= 60) {
+      return `Good match with ${matchingNotes.length} shared notes. Similar fragrance family and character.`;
+    } else if (similarity >= 40) {
+      return `Moderate match. Some shared elements that might appeal to your taste profile.`;
+    } else {
+      return `Interesting alternative with a different but complementary scent profile.`;
+    }
+  };
+
   const analyzeProfile = async () => {
+    if (topNotes.length === 0 && middleNotes.length === 0 && baseNotes.length === 0) {
+      return;
+    }
+
     setIsAnalyzing(true);
     
-    // Simulate AI analysis
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    // Simulate AI analysis delay
+    await new Promise(resolve => setTimeout(resolve, 2500));
     
-    // Simple matching algorithm based on shared notes
-    const currentNotes = [
+    // Collect all user notes and intensities
+    const allUserNotes = [
       ...topNotes.map(n => n.note),
       ...middleNotes.map(n => n.note),
       ...baseNotes.map(n => n.note)
     ];
 
-    const perfumeMatches = mockPerfumes.map(perfume => {
+    const userIntensities: { [key: string]: number } = {};
+    [...topNotes, ...middleNotes, ...baseNotes].forEach(note => {
+      userIntensities[note.note] = note.intensity;
+    });
+
+    // Calculate matches for all perfumes
+    const perfumeMatches: PerfumeMatch[] = mockPerfumes.map(perfume => {
       const perfumeNotes = [
         ...perfume.notes.top,
         ...perfume.notes.middle,
         ...perfume.notes.base
       ];
 
-      const commonNotes = currentNotes.filter(note => 
-        perfumeNotes.some(pNote => pNote.toLowerCase().includes(note.toLowerCase()))
+      const matchingNotes = allUserNotes.filter(userNote => 
+        perfumeNotes.some(perfumeNote => 
+          perfumeNote.toLowerCase().includes(userNote.toLowerCase()) ||
+          userNote.toLowerCase().includes(perfumeNote.toLowerCase())
+        )
       );
 
-      const similarity = Math.min(95, (commonNotes.length / Math.max(currentNotes.length, 1)) * 100 + Math.random() * 20);
-      
-      return { perfume, similarity: Math.round(similarity) };
-    }).filter(match => match.similarity > 30)
-      .sort((a, b) => b.similarity - a.similarity)
-      .slice(0, 6);
+      const similarity = calculateSimilarity(perfume, allUserNotes, userIntensities);
+      const reason = generateMatchReason(perfume, matchingNotes, similarity);
+
+      return {
+        perfume,
+        similarity,
+        matchingNotes,
+        reason
+      };
+    })
+    .filter(match => match.similarity > 20) // Only show matches above 20%
+    .sort((a, b) => b.similarity - a.similarity) // Sort by similarity
+    .slice(0, 6); // Take top 6 matches
 
     setMatches(perfumeMatches);
     setIsAnalyzing(false);
@@ -553,9 +633,32 @@ export default function ScentBuilderPage() {
                     {match.similarity}% Match
                   </Badge>
                   <PerfumeCard perfume={match.perfume} showFullDetails />
+                  <div className="mt-3 p-3 bg-muted/50 rounded-lg">
+                    <p className="text-xs text-muted-foreground mb-2">
+                      <strong>Matching Notes:</strong> {match.matchingNotes.join(', ') || 'Similar fragrance family'}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      <strong>AI Analysis:</strong> {match.reason}
+                    </p>
+                  </div>
                 </div>
               ))}
             </div>
+          </div>
+        )}
+
+        {/* No matches message */}
+        {!isAnalyzing && matches.length === 0 && totalNotes > 0 && (
+          <div className="mt-12 text-center py-12">
+            <Sparkles className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+            <h3 className="text-xl font-semibold mb-2">Ready to Find Matches?</h3>
+            <p className="text-muted-foreground mb-4">
+              Click "Find Matches" to discover fragrances that match your custom scent profile
+            </p>
+            <Button onClick={analyzeProfile} className="gap-2">
+              <Sparkles className="h-4 w-4" />
+              Find Matches
+            </Button>
           </div>
         )}
       </div>
