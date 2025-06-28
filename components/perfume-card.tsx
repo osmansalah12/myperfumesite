@@ -9,7 +9,6 @@ import { Badge } from '@/components/ui/badge';
 import { 
   Heart, 
   Star, 
-  ShoppingCart, 
   Clock, 
   Zap,
   Info
@@ -200,10 +199,12 @@ export default function PerfumeCard({
               )}
             </div>
           </div>
-          <Button size="sm" className="gap-2">
-            <ShoppingCart className="h-4 w-4" />
-            Add to Cart
-          </Button>
+          <Link href={`/perfume/${perfume.id}`}>
+            <Button size="sm" variant="outline" className="gap-2">
+              <Info className="h-4 w-4" />
+              View Details
+            </Button>
+          </Link>
         </div>
       </CardFooter>
     </Card>
