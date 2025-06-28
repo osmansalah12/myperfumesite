@@ -8,7 +8,6 @@ import { Badge } from '@/components/ui/badge';
 import { 
   Search, 
   Sparkles, 
-  ChevronRight,
   Brain,
   Palette
 } from 'lucide-react';
@@ -35,10 +34,10 @@ export default function Home() {
                 AI-Powered Fragrance Discovery
               </Badge>
               <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600 bg-clip-text text-transparent">
-                Discover Your Perfect Scent with AI
+                Breathe In, Blend Out
               </h1>
               <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
-                Build custom fragrance profiles, find perfect matches, and connect with a community of scent enthusiasts
+                From rich woods to delicate florals—your custom scent starts with a single note.
               </p>
             </div>
 
@@ -99,7 +98,7 @@ export default function Home() {
                 </Button>
               </Link>
               <Link href="/search">
-                <Button size="lg" variant="outline" className="gap-2 text-white border-white hover:bg-white hover:text-purple-600">
+                <Button size="lg" variant="outline" className="gap-2 text-black border-white hover:bg-white hover:text-purple-600">
                   <Search className="h-5 w-5" />
                   Explore Perfumes
                 </Button>

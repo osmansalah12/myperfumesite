@@ -10,7 +10,6 @@ import {
   User, 
   ShoppingBag, 
   Heart, 
-  Bell,
   Menu,
   X,
   Sparkles,
@@ -18,7 +17,8 @@ import {
   LogIn,
   UserPlus,
   Settings,
-  LogOut
+  LogOut,
+  Newspaper
 } from 'lucide-react';
 import {
   NavigationMenu,
@@ -39,7 +39,7 @@ import {
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // This would come from auth context in real app
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,13 +48,19 @@ export default function Header() {
     }
   };
 
-  const handleLogin = () => {
-    // In a real app, this would trigger login flow
+  const handleGoogleLogin = () => {
+    // In a real app, this would trigger Google OAuth flow
+    console.log('Google login initiated');
+    setIsLoggedIn(true);
+  };
+
+  const handleAppleLogin = () => {
+    // In a real app, this would trigger Apple OAuth flow
+    console.log('Apple login initiated');
     setIsLoggedIn(true);
   };
 
   const handleLogout = () => {
-    // In a real app, this would trigger logout flow
     setIsLoggedIn(false);
   };
 
@@ -172,18 +178,21 @@ export default function Header() {
                       </Link>
                     </NavigationMenuLink>
                     <NavigationMenuLink asChild>
-                      <Link href="/wishlist" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
-                        <div className="text-sm font-medium leading-none">Wishlist</div>
+                      <Link href="/news" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                        <div className="text-sm font-medium leading-none flex items-center gap-2">
+                          <Newspaper className="h-4 w-4" />
+                          Perfume News
+                        </div>
                         <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                          Save your favorite fragrances
+                          Latest fragrance industry news and trends
                         </p>
                       </Link>
                     </NavigationMenuLink>
                     <NavigationMenuLink asChild>
-                      <Link href="/notifications" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
-                        <div className="text-sm font-medium leading-none">Notifications</div>
+                      <Link href="/wishlist" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                        <div className="text-sm font-medium leading-none">Wishlist</div>
                         <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                          Stay updated on deals and recommendations
+                          Save your favorite fragrances
                         </p>
                       </Link>
                     </NavigationMenuLink>
@@ -235,12 +244,6 @@ export default function Header() {
                         <span>Wishlist</span>
                       </Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link href="/notifications">
-                        <Bell className="mr-2 h-4 w-4" />
-                        <span>Notifications</span>
-                      </Link>
-                    </DropdownMenuItem>
                     <DropdownMenuItem>
                       <Settings className="mr-2 h-4 w-4" />
                       <span>Settings</span>
@@ -253,13 +256,18 @@ export default function Header() {
                   </>
                 ) : (
                   <>
-                    <DropdownMenuItem onClick={handleLogin}>
+                    <DropdownMenuItem onClick={handleGoogleLogin}>
                       <LogIn className="mr-2 h-4 w-4" />
-                      <span>Log in</span>
+                      <span>Continue with Google</span>
                     </DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleAppleLogin}>
+                      <LogIn className="mr-2 h-4 w-4" />
+                      <span>Continue with Apple</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
                     <DropdownMenuItem>
                       <UserPlus className="mr-2 h-4 w-4" />
-                      <span>Sign up</span>
+                      <span>Sign up with Email</span>
                     </DropdownMenuItem>
                   </>
                 )}
@@ -329,14 +337,17 @@ export default function Header() {
                     <Badge variant="secondary" className="text-xs">Premium</Badge>
                   </span>
                 </Link>
+                <Link href="/news" className="block px-3 py-2 text-sm font-medium hover:bg-accent rounded-md">
+                  <span className="flex items-center gap-2">
+                    <Newspaper className="h-4 w-4" />
+                    Perfume News
+                  </span>
+                </Link>
                 <Link href="/layering-guide" className="block px-3 py-2 text-sm font-medium hover:bg-accent rounded-md">
                   Layering Guide
                 </Link>
                 <Link href="/wishlist" className="block px-3 py-2 text-sm font-medium hover:bg-accent rounded-md">
                   Wishlist
-                </Link>
-                <Link href="/notifications" className="block px-3 py-2 text-sm font-medium hover:bg-accent rounded-md">
-                  Notifications
                 </Link>
                 
                 {/* Mobile Auth */}
@@ -356,13 +367,19 @@ export default function Header() {
                   ) : (
                     <>
                       <button 
-                        onClick={handleLogin}
+                        onClick={handleGoogleLogin}
                         className="block w-full text-left px-3 py-2 text-sm font-medium hover:bg-accent rounded-md"
                       >
-                        Log in
+                        Continue with Google
+                      </button>
+                      <button 
+                        onClick={handleAppleLogin}
+                        className="block w-full text-left px-3 py-2 text-sm font-medium hover:bg-accent rounded-md"
+                      >
+                        Continue with Apple
                       </button>
                       <Link href="/signup" className="block px-3 py-2 text-sm font-medium hover:bg-accent rounded-md">
-                        Sign up
+                        Sign up with Email
                       </Link>
                     </>
                   )}
