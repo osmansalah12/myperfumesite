@@ -14,7 +14,11 @@ import {
   Menu,
   X,
   Sparkles,
-  Bot
+  Bot,
+  LogIn,
+  UserPlus,
+  Settings,
+  LogOut
 } from 'lucide-react';
 import {
   NavigationMenu,
@@ -24,16 +28,34 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // This would come from auth context in real app
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
       window.location.href = `/search?q=${encodeURIComponent(searchQuery)}`;
     }
+  };
+
+  const handleLogin = () => {
+    // In a real app, this would trigger login flow
+    setIsLoggedIn(true);
+  };
+
+  const handleLogout = () => {
+    // In a real app, this would trigger logout flow
+    setIsLoggedIn(false);
   };
 
   return (
@@ -46,7 +68,7 @@ export default function Header() {
               <Sparkles className="h-5 w-5 text-white" />
             </div>
             <span className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-              ScentAI
+              scent.co
             </span>
           </Link>
 
@@ -124,7 +146,7 @@ export default function Header() {
               </NavigationMenuItem>
 
               <NavigationMenuItem>
-                <NavigationMenuTrigger>Shop</NavigationMenuTrigger>
+                <NavigationMenuTrigger>More</NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <div className="grid gap-3 p-6 w-[400px]">
                     <NavigationMenuLink asChild>
@@ -146,6 +168,22 @@ export default function Header() {
                         </div>
                         <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                           AI-powered discount finder with live deals
+                        </p>
+                      </Link>
+                    </NavigationMenuLink>
+                    <NavigationMenuLink asChild>
+                      <Link href="/wishlist" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                        <div className="text-sm font-medium leading-none">Wishlist</div>
+                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                          Save your favorite fragrances
+                        </p>
+                      </Link>
+                    </NavigationMenuLink>
+                    <NavigationMenuLink asChild>
+                      <Link href="/notifications" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                        <div className="text-sm font-medium leading-none">Notifications</div>
+                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                          Stay updated on deals and recommendations
                         </p>
                       </Link>
                     </NavigationMenuLink>
@@ -171,24 +209,62 @@ export default function Header() {
 
           {/* User Actions */}
           <div className="flex items-center space-x-2">
-            <Link href="/wishlist">
-              <Button variant="ghost" size="icon" className="hidden md:flex">
-                <Heart className="h-5 w-5" />
-              </Button>
-            </Link>
-            <Link href="/notifications">
-              <Button variant="ghost" size="icon" className="hidden md:flex">
-                <Bell className="h-5 w-5" />
-              </Button>
-            </Link>
             <Link href="/cart">
               <Button variant="ghost" size="icon">
                 <ShoppingBag className="h-5 w-5" />
               </Button>
             </Link>
-            <Button variant="ghost" size="icon">
-              <User className="h-5 w-5" />
-            </Button>
+
+            {/* User Menu */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon">
+                  <User className="h-5 w-5" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                {isLoggedIn ? (
+                  <>
+                    <DropdownMenuItem>
+                      <User className="mr-2 h-4 w-4" />
+                      <span>Profile</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="/wishlist">
+                        <Heart className="mr-2 h-4 w-4" />
+                        <span>Wishlist</span>
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="/notifications">
+                        <Bell className="mr-2 h-4 w-4" />
+                        <span>Notifications</span>
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Settings className="mr-2 h-4 w-4" />
+                      <span>Settings</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={handleLogout}>
+                      <LogOut className="mr-2 h-4 w-4" />
+                      <span>Log out</span>
+                    </DropdownMenuItem>
+                  </>
+                ) : (
+                  <>
+                    <DropdownMenuItem onClick={handleLogin}>
+                      <LogIn className="mr-2 h-4 w-4" />
+                      <span>Log in</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <UserPlus className="mr-2 h-4 w-4" />
+                      <span>Sign up</span>
+                    </DropdownMenuItem>
+                  </>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
 
             {/* Mobile Menu Toggle */}
             <Button
@@ -262,6 +338,35 @@ export default function Header() {
                 <Link href="/notifications" className="block px-3 py-2 text-sm font-medium hover:bg-accent rounded-md">
                   Notifications
                 </Link>
+                
+                {/* Mobile Auth */}
+                <div className="border-t pt-2 mt-2">
+                  {isLoggedIn ? (
+                    <>
+                      <Link href="/profile" className="block px-3 py-2 text-sm font-medium hover:bg-accent rounded-md">
+                        Profile
+                      </Link>
+                      <button 
+                        onClick={handleLogout}
+                        className="block w-full text-left px-3 py-2 text-sm font-medium hover:bg-accent rounded-md"
+                      >
+                        Log out
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button 
+                        onClick={handleLogin}
+                        className="block w-full text-left px-3 py-2 text-sm font-medium hover:bg-accent rounded-md"
+                      >
+                        Log in
+                      </button>
+                      <Link href="/signup" className="block px-3 py-2 text-sm font-medium hover:bg-accent rounded-md">
+                        Sign up
+                      </Link>
+                    </>
+                  )}
+                </div>
               </div>
             </div>
           </div>

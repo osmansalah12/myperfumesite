@@ -6,7 +6,7 @@ import Header from '@/components/header';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'ScentAI - AI-Powered Fragrance Discovery',
+  title: 'scent.co - AI-Powered Fragrance Discovery',
   description: 'Discover your perfect scent with AI-powered recommendations, custom fragrance builder, and community reviews.',
 };
 
