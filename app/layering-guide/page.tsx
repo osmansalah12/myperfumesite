@@ -20,7 +20,8 @@ import {
   Heart,
   Star,
   ChevronRight,
-  AlertCircle
+  AlertCircle,
+  X
 } from 'lucide-react';
 import PerfumeCard from '@/components/perfume-card';
 import { mockPerfumes, allFragranceNotes } from '@/data/mockData';
