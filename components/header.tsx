@@ -4,30 +4,21 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
 import { 
   Search, 
   User, 
-  ShoppingBag, 
   Heart, 
   Menu,
   X,
   Sparkles,
-  Bot,
+  Brain,
   LogIn,
   UserPlus,
   Settings,
   LogOut,
-  Newspaper
+  Zap,
+  Users
 } from 'lucide-react';
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -49,13 +40,11 @@ export default function Header() {
   };
 
   const handleGoogleLogin = () => {
-    // In a real app, this would trigger Google OAuth flow
     console.log('Google login initiated');
     setIsLoggedIn(true);
   };
 
   const handleAppleLogin = () => {
-    // In a real app, this would trigger Apple OAuth flow
     console.log('Apple login initiated');
     setIsLoggedIn(true);
   };
@@ -79,128 +68,26 @@ export default function Header() {
           </Link>
 
           {/* Navigation - Desktop */}
-          <NavigationMenu className="hidden lg:flex">
-            <NavigationMenuList>
-              <NavigationMenuItem>
-                <NavigationMenuTrigger>Discover</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <div className="grid gap-3 p-6 w-[400px]">
-                    <NavigationMenuLink asChild>
-                      <Link href="/search" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
-                        <div className="text-sm font-medium leading-none">Search Perfumes</div>
-                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                          Find perfumes by notes, brand, or mood
-                        </p>
-                      </Link>
-                    </NavigationMenuLink>
-                    <NavigationMenuLink asChild>
-                      <Link href="/ai-chat" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
-                        <div className="text-sm font-medium leading-none flex items-center gap-2">
-                          <Bot className="h-4 w-4" />
-                          AI Assistant
-                        </div>
-                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                          Get personalized recommendations with AI
-                        </p>
-                      </Link>
-                    </NavigationMenuLink>
-                    <NavigationMenuLink asChild>
-                      <Link href="/mood-recommendations" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
-                        <div className="text-sm font-medium leading-none">Mood Recommendations</div>
-                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                          Get AI recommendations based on your mood
-                        </p>
-                      </Link>
-                    </NavigationMenuLink>
-                    <NavigationMenuLink asChild>
-                      <Link href="/reviews" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
-                        <div className="text-sm font-medium leading-none">Reviews & Ratings</div>
-                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                          Read and write detailed perfume reviews
-                        </p>
-                      </Link>
-                    </NavigationMenuLink>
-                  </div>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-
-              <NavigationMenuItem>
-                <NavigationMenuTrigger>Create</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <div className="grid gap-3 p-6 w-[400px]">
-                    <NavigationMenuLink asChild>
-                      <Link href="/scent-builder" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
-                        <div className="text-sm font-medium leading-none flex items-center gap-2">
-                          Custom Scent Builder 
-                          <Badge variant="secondary" className="text-xs">Premium</Badge>
-                        </div>
-                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                          Build your ideal scent profile with AI matching
-                        </p>
-                      </Link>
-                    </NavigationMenuLink>
-                    <NavigationMenuLink asChild>
-                      <Link href="/layering-guide" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
-                        <div className="text-sm font-medium leading-none">Layering Guide</div>
-                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                          Learn to layer fragrances for unique combinations
-                        </p>
-                      </Link>
-                    </NavigationMenuLink>
-                  </div>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-
-              <NavigationMenuItem>
-                <NavigationMenuTrigger>More</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <div className="grid gap-3 p-6 w-[400px]">
-                    <NavigationMenuLink asChild>
-                      <Link href="/marketplace" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
-                        <div className="text-sm font-medium leading-none flex items-center gap-2">
-                          P2P Marketplace 
-                          <Badge variant="secondary" className="text-xs">Premium</Badge>
-                        </div>
-                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                          Buy and sell perfumes with other collectors
-                        </p>
-                      </Link>
-                    </NavigationMenuLink>
-                    <NavigationMenuLink asChild>
-                      <Link href="/deals" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
-                        <div className="text-sm font-medium leading-none flex items-center gap-2">
-                          Best Deals 
-                          <Badge variant="secondary" className="text-xs">Premium</Badge>
-                        </div>
-                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                          AI-powered discount finder with live deals
-                        </p>
-                      </Link>
-                    </NavigationMenuLink>
-                    <NavigationMenuLink asChild>
-                      <Link href="/news" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
-                        <div className="text-sm font-medium leading-none flex items-center gap-2">
-                          <Newspaper className="h-4 w-4" />
-                          Perfume News
-                        </div>
-                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                          Latest fragrance industry news and trends
-                        </p>
-                      </Link>
-                    </NavigationMenuLink>
-                    <NavigationMenuLink asChild>
-                      <Link href="/wishlist" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
-                        <div className="text-sm font-medium leading-none">Wishlist</div>
-                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                          Save your favorite fragrances
-                        </p>
-                      </Link>
-                    </NavigationMenuLink>
-                  </div>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
+          <nav className="hidden lg:flex items-center space-x-8">
+            <Link href="/discover" className="flex items-center gap-2 text-sm font-medium hover:text-primary transition-colors">
+              <Zap className="h-4 w-4" />
+              Discover
+            </Link>
+            <Link href="/smells-like" className="flex items-center gap-2 text-sm font-medium hover:text-primary transition-colors">
+              <Brain className="h-4 w-4" />
+              Smells Like
+            </Link>
+            <Link href="/mood-match" className="text-sm font-medium hover:text-primary transition-colors">
+              Mood Match
+            </Link>
+            <Link href="/community" className="flex items-center gap-2 text-sm font-medium hover:text-primary transition-colors">
+              <Users className="h-4 w-4" />
+              Community
+            </Link>
+            <Link href="/search" className="text-sm font-medium hover:text-primary transition-colors">
+              Browse All
+            </Link>
+          </nav>
 
           {/* Search Bar - Desktop */}
           <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-sm mx-8">
@@ -208,7 +95,7 @@ export default function Header() {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
               <Input
                 type="text"
-                placeholder="Search by notes, brand, or mood..."
+                placeholder="Search or describe a scent..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 pr-4"
@@ -218,9 +105,9 @@ export default function Header() {
 
           {/* User Actions */}
           <div className="flex items-center space-x-2">
-            <Link href="/cart">
+            <Link href="/wishlist">
               <Button variant="ghost" size="icon">
-                <ShoppingBag className="h-5 w-5" />
+                <Heart className="h-5 w-5" />
               </Button>
             </Link>
 
@@ -265,9 +152,11 @@ export default function Header() {
                       <span>Continue with Apple</span>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>
-                      <UserPlus className="mr-2 h-4 w-4" />
-                      <span>Sign up with Email</span>
+                    <DropdownMenuItem asChild>
+                      <Link href="/auth/signup">
+                        <UserPlus className="mr-2 h-4 w-4" />
+                        <span>Sign up with Email</span>
+                      </Link>
                     </DropdownMenuItem>
                   </>
                 )}
@@ -295,7 +184,7 @@ export default function Header() {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                 <Input
                   type="text"
-                  placeholder="Search perfumes..."
+                  placeholder="Search or describe a scent..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="pl-10 pr-4"
@@ -304,47 +193,29 @@ export default function Header() {
 
               {/* Mobile Navigation Links */}
               <div className="space-y-2">
+                <Link href="/discover" className="block px-3 py-2 text-sm font-medium hover:bg-accent rounded-md">
+                  <span className="flex items-center gap-2">
+                    <Zap className="h-4 w-4" />
+                    Discover Scents
+                  </span>
+                </Link>
+                <Link href="/smells-like" className="block px-3 py-2 text-sm font-medium hover:bg-accent rounded-md">
+                  <span className="flex items-center gap-2">
+                    <Brain className="h-4 w-4" />
+                    Smells Like...
+                  </span>
+                </Link>
+                <Link href="/mood-match" className="block px-3 py-2 text-sm font-medium hover:bg-accent rounded-md">
+                  Mood Match
+                </Link>
+                <Link href="/community" className="block px-3 py-2 text-sm font-medium hover:bg-accent rounded-md">
+                  <span className="flex items-center gap-2">
+                    <Users className="h-4 w-4" />
+                    Community
+                  </span>
+                </Link>
                 <Link href="/search" className="block px-3 py-2 text-sm font-medium hover:bg-accent rounded-md">
-                  Search Perfumes
-                </Link>
-                <Link href="/ai-chat" className="block px-3 py-2 text-sm font-medium hover:bg-accent rounded-md">
-                  <span className="flex items-center gap-2">
-                    <Bot className="h-4 w-4" />
-                    AI Assistant
-                  </span>
-                </Link>
-                <Link href="/scent-builder" className="block px-3 py-2 text-sm font-medium hover:bg-accent rounded-md">
-                  <span className="flex items-center gap-2">
-                    Scent Builder 
-                    <Badge variant="secondary" className="text-xs">Premium</Badge>
-                  </span>
-                </Link>
-                <Link href="/mood-recommendations" className="block px-3 py-2 text-sm font-medium hover:bg-accent rounded-md">
-                  Mood Recommendations
-                </Link>
-                <Link href="/reviews" className="block px-3 py-2 text-sm font-medium hover:bg-accent rounded-md">
-                  Reviews & Ratings
-                </Link>
-                <Link href="/marketplace" className="block px-3 py-2 text-sm font-medium hover:bg-accent rounded-md">
-                  <span className="flex items-center gap-2">
-                    Marketplace 
-                    <Badge variant="secondary" className="text-xs">Premium</Badge>
-                  </span>
-                </Link>
-                <Link href="/deals" className="block px-3 py-2 text-sm font-medium hover:bg-accent rounded-md">
-                  <span className="flex items-center gap-2">
-                    Best Deals 
-                    <Badge variant="secondary" className="text-xs">Premium</Badge>
-                  </span>
-                </Link>
-                <Link href="/news" className="block px-3 py-2 text-sm font-medium hover:bg-accent rounded-md">
-                  <span className="flex items-center gap-2">
-                    <Newspaper className="h-4 w-4" />
-                    Perfume News
-                  </span>
-                </Link>
-                <Link href="/layering-guide" className="block px-3 py-2 text-sm font-medium hover:bg-accent rounded-md">
-                  Layering Guide
+                  Browse All
                 </Link>
                 <Link href="/wishlist" className="block px-3 py-2 text-sm font-medium hover:bg-accent rounded-md">
                   Wishlist
@@ -378,7 +249,7 @@ export default function Header() {
                       >
                         Continue with Apple
                       </button>
-                      <Link href="/signup" className="block px-3 py-2 text-sm font-medium hover:bg-accent rounded-md">
+                      <Link href="/auth/signup" className="block px-3 py-2 text-sm font-medium hover:bg-accent rounded-md">
                         Sign up with Email
                       </Link>
                     </>
